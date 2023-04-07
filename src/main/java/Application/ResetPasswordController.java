@@ -22,7 +22,7 @@ public class ResetPasswordController {
     @FXML
     private PasswordField confirmPasswordField;
 
-    private static final String PASSWORD_KEY = "password";
+    private static final String PASSWORD_KEY = "defaultPassword";
     private static final String PROPERTIES_FILE = "app.properties";
     private Properties properties;
 
