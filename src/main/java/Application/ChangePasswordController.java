@@ -16,7 +16,13 @@ import java.util.Properties;
 
 public class ChangePasswordController {
 
+    // Constants for property keys
     private static final String FIRST_TIME_LOGIN_KEY = "firstTimeLogin";
+    private static final String USERNAME_KEY = "username";
+    private static final String PASSWORD_KEY = "defaultPassword";
+    private static final String PROPERTIES_FILE = "app.properties";
+
+    // UI components
     @FXML
     private PasswordField currentPasswordField;
     @FXML
@@ -26,11 +32,10 @@ public class ChangePasswordController {
     @FXML
     private TextField usernameField;
 
-    private static final String USERNAME_KEY = "username";
-    private static final String PASSWORD_KEY = "defaultPassword";
-    private static final String PROPERTIES_FILE = "app.properties";
+    // Properties object to store application settings
     private Properties properties;
 
+    // Constructor: loads properties from the properties file
     public ChangePasswordController() {
         properties = new Properties();
         try {
@@ -39,14 +44,17 @@ public class ChangePasswordController {
             e.printStackTrace();
         }
     }
+
     // Handles the change password button click event
     @FXML
     private void handleChangePassword(ActionEvent event) {
+        // Get input from the password fields
         String newPassword = newPasswordField.getText();
         String confirmedPassword = confirmNewPasswordField.getText();
 
         // Check if the passwords match
         if (!newPassword.equals(confirmedPassword)) {
+            // Show an error message if the passwords don't match
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Passwords do not match");
@@ -71,13 +79,17 @@ public class ChangePasswordController {
         Stage window = (Stage) newPasswordField.getScene().getWindow();
         window.close();
     }
+
+    // Handles the save password button click event
     @FXML
     private void handleSavePassword(ActionEvent event) {
+        // Get input from the fields
         String currentPassword = currentPasswordField.getText();
         String newPassword = newPasswordField.getText();
         String confirmNewPassword = confirmNewPasswordField.getText();
         String username = usernameField.getText();
 
+        // Validate input: check for empty fields
         if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty() || username.isEmpty()) {
             // Show an error message if any of the fields are empty
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -88,6 +100,7 @@ public class ChangePasswordController {
             return;
         }
 
+        // Validate input: check for correct username
         if (!username.equals(properties.getProperty(USERNAME_KEY))) {
             // Show an error message if the entered username is incorrect
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -98,6 +111,7 @@ public class ChangePasswordController {
             return;
         }
 
+        // Validate input: check for correct current password
         if (!validateCurrentPassword(currentPassword)) {
             // Show an error message if the entered current password is incorrect
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -108,6 +122,7 @@ public class ChangePasswordController {
             return;
         }
 
+        // Validate input: check if the new passwords match
         if (!newPassword.equals(confirmNewPassword)) {
             // Show an error message if the new passwords don't match
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -136,18 +151,19 @@ public class ChangePasswordController {
         redirectToHomePage(event);
     }
 
+    // Handles the cancel button click event
     @FXML
     private void handleCancel(ActionEvent event) {
         redirectToHomePage(event);
     }
 
+    // Redirects the user to the home page
     private void redirectToHomePage(ActionEvent event) {
         Main.switchScene("Home.fxml", "Home Page", (Stage) ((Node) event.getSource()).getScene().getWindow());
     }
 
+    // Validates the entered current password
     private boolean validateCurrentPassword(String enteredPassword) {
         return enteredPassword.equals(properties.getProperty(PASSWORD_KEY));
     }
-
-
 }

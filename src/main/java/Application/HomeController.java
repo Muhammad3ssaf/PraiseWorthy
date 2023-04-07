@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,14 +22,17 @@ public class HomeController {
 
     private String username;
 
+    // Set the username and update the welcome label
     public void setUsername(String username) {
         this.username = username;
         welcomeLabel.setText("Welcome, " + username + "!");
     }
 
+    // Handle logout button click event
     @FXML
     private void handleLogout(ActionEvent event) {
         try {
+            // Load the login scene and set it as the current scene
             Parent loginParent = FXMLLoader.load(getClass().getResource("Login.fxml"));
             Scene loginScene = new Scene(loginParent, 300, 200);
 
@@ -43,11 +45,11 @@ public class HomeController {
         }
     }
 
+    // Handle the update name button click event
     @FXML
     private void handleUpdateName(ActionEvent event) {
         String newName = nameTextField.getText();
         setUsername(newName);
     }
 
-    // Other methods and logic can be added here as needed
 }
