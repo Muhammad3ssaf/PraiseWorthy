@@ -1,19 +1,20 @@
 package Application;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import java.time.format.DateTimeFormatter;
 
-public class RecommendationForm extends Application {
+public class RecommendationForm extends javafx.application.Application {
 
     private TextField firstNameTextField;
     private TextField lastNameTextField;
     private ComboBox<String> genderComboBox;
     private TextField targetSchoolTextField;
+
     private DatePicker currentDatePicker;
     private ComboBox<String> programComboBox;
     private ComboBox<String> semesterComboBox;
@@ -21,6 +22,8 @@ public class RecommendationForm extends Application {
     private ListView<String> coursesListView;
     private ListView<String> personalCharListView;
     private ListView<String> academicCharListView;
+    private TextField letterGradesTextField;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -96,8 +99,8 @@ public class RecommendationForm extends Application {
         gridPane.add(coursesListView, 1, 8);
         // Letter grades for courses
         Label gradesLabel = new Label("Letter Grades:");
+        letterGradesTextField = new TextField();
         gridPane.add(gradesLabel, 2, 8);
-        TextField letterGradesTextField = new TextField();
         gridPane.add(letterGradesTextField, 3, 8);
 
         // Personal characteristics
@@ -123,11 +126,39 @@ public class RecommendationForm extends Application {
         Button submitButton = new Button("Submit");
         gridPane.add(submitButton, 1, 11);
         GridPane.setHalignment(submitButton, javafx.geometry.HPos.RIGHT);
+        submitButton.setOnAction(event -> saveDataToDatabase());
 
         Scene scene = new Scene(gridPane, 700, 700);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    private void saveDataToDatabase() {
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
+        String gender = genderComboBox.getSelectionModel().getSelectedItem();
+        String targetSchool = targetSchoolTextField.getText();
+        String currentDate = currentDatePicker.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String program = programComboBox.getSelectionModel().getSelectedItem();
+        String firstSemester = semesterComboBox.getSelectionModel().getSelectedItem();
+        int year = Integer.parseInt(yearTextField.getText());
+        String courses = String.join(", ", coursesListView.getSelectionModel().getSelectedItems());
+        String grades = letterGradesTextField.getText(); // Add `letterGradesTextField` as a class variable similar to other fields
+        String personalCharacteristics = String.join(", ", personalCharListView.getSelectionModel().getSelectedItems());
+        String academicCharacteristics = String.join(", ", academicCharListView.getSelectionModel().getSelectedItems());
+
+        DataBaseManager.insertData(firstName, lastName, gender, targetSchool, currentDate, program, firstSemester, year, courses, grades, personalCharacteristics, academicCharacteristics);
+        showSuccessMessage();
+    }
+
+    private void showSuccessMessage() {
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Success");
+        successAlert.setHeaderText("Form Submission");
+        successAlert.setContentText("The recommendation form has been submitted successfully.");
+        successAlert.showAndWait();
+    }
+
 
     public static void main(String[] args) {
         launch(args);
