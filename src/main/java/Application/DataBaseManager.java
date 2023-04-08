@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DataBaseManager {
 
     // Database URL
-    private static final String DB_URL = "jdbc:sqlite:/home/moody3ssaf/HERE.db";
+    private static final String DB_URL = "jdbc:sqlite:myDB.sqlite";
 
     // Main method to test the database connection
     public static void main(String[] args) {
