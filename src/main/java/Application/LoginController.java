@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.function.Consumer;
 
 public class LoginController {
 
@@ -33,7 +34,9 @@ public class LoginController {
     private static final String PASSWORD_KEY = "defaultPassword";
     private static final String PROPERTIES_FILE = "app.properties";
     private Properties properties;
-
+    private static Runnable onLoginSuccessful;
+    private static Consumer<ActionEvent> onChangePasswordCallback;
+    private static Consumer<ActionEvent> onRecommendationFormCallback;
     // Constructor: Initializes properties and loads the properties file
     public LoginController() {
         properties = new Properties();
@@ -45,6 +48,44 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+    public static void setOnChangePasswordCallback(Consumer<ActionEvent> callback) {
+        onChangePasswordCallback = callback;
+    }
+    public static void setOnRecommendationFormCallback(Consumer<ActionEvent> callback) {
+        onRecommendationFormCallback = callback;
+    }
+    public static void setOnLoginSuccessful(Runnable callback) {
+        onLoginSuccessful = callback;
+    }
+
+    private void handleSuccessfulLogin(ActionEvent event) {
+        if (onLoginSuccessful != null) {
+            onLoginSuccessful.run();
+        }
+
+        try {
+            if (isFirstTimeLogin()) {
+                Parent changePasswordParent = FXMLLoader.load(getClass().getResource("ChangePassword.fxml"));
+                Scene changePasswordScene = new Scene(changePasswordParent, 300, 200);
+
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(changePasswordScene);
+                window.setTitle("Change Password");
+                window.show();
+            } else {
+                RecommendationForm recommendationForm = new RecommendationForm();
+                Scene recommendationFormScene = recommendationForm.createRecommendationFormScene();
+
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(recommendationFormScene);
+                window.setTitle("Recommendation Form");
+                window.show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Checks if it's the first-time login
     private boolean isFirstTimeLogin() {
@@ -58,21 +99,43 @@ public class LoginController {
 
     // Handles the login button click event
 
+//    @FXML
+//    private void handleLogin(ActionEvent event) {
+//        String enteredPassword;
+//        String storedPassword;
+//        boolean isFirstTimeLogin;
+//
+//        enteredPassword = passwordField.getText();
+//        storedPassword = getPassword();
+//        isFirstTimeLogin = isFirstTimeLogin();
+//
+//        if (enteredPassword.equals(storedPassword)) {
+//            if (isFirstTimeLogin) {
+//                redirectToChangePassword(event);
+//            } else {
+//            	handleSuccessfulLogin(event);
+//            }
+//        } else {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText("Incorrect Password");
+//            alert.setContentText("Entered password is incorrect. Please try again.");
+//            alert.showAndWait();
+//        }
+//
+//    }
+    
     @FXML
     private void handleLogin(ActionEvent event) {
-        String enteredPassword;
-        String storedPassword;
-        boolean isFirstTimeLogin;
-
-        enteredPassword = passwordField.getText();
-        storedPassword = getPassword();
-        isFirstTimeLogin = isFirstTimeLogin();
+        String enteredPassword = passwordField.getText();
+        String storedPassword = getPassword();
+        boolean isFirstTimeLogin = isFirstTimeLogin();
 
         if (enteredPassword.equals(storedPassword)) {
             if (isFirstTimeLogin) {
                 redirectToChangePassword(event);
             } else {
-                redirectToHomePage(event);
+                setOnLoginSuccessful(false, event);
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -81,10 +144,35 @@ public class LoginController {
             alert.setContentText("Entered password is incorrect. Please try again.");
             alert.showAndWait();
         }
-
     }
 
 
+    public static void setOnLoginSuccessful(boolean isFirstTimeLogin, ActionEvent event) {
+        onLoginSuccessful = () -> {
+            try {
+                RecommendationForm recommendationForm = new RecommendationForm();
+                Scene recommendationFormScene = recommendationForm.createRecommendationFormScene();
+
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(recommendationFormScene);
+                window.setTitle("Recommendation Form");
+                window.show();
+
+                if (isFirstTimeLogin) {
+                	Parent changePasswordParent = FXMLLoader.load(LoginController.class.getResource("ChangePassword.fxml"));
+                    Scene changePasswordScene = new Scene(changePasswordParent, 300, 200);
+
+                    Stage changePasswordStage = new Stage();
+                    changePasswordStage.setScene(changePasswordScene);
+                    changePasswordStage.setTitle("Change Password");
+                    changePasswordStage.show();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+        onLoginSuccessful.run();
+    }
 
     // Validates the entered password against the stored password
     private boolean validatePassword(String enteredPassword) {

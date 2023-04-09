@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+
 
 import java.io.IOException;
 
@@ -21,6 +23,8 @@ public class HomeController {
     private TextField nameTextField;
 
     private String username;
+    @FXML
+    private Button continueButton;
 
     // Set the username and update the welcome label
     public void setUsername(String username) {
@@ -43,6 +47,15 @@ public class HomeController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void handleContinue(ActionEvent event) throws IOException {
+        RecommendationForm recommendationForm = new RecommendationForm();
+        Scene recommendationFormScene = recommendationForm.createRecommendationFormScene();
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(recommendationFormScene);
+        window.show();
     }
 
     // Handle the update name button click event

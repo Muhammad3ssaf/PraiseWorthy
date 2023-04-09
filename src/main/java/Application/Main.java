@@ -17,28 +17,22 @@ public class Main extends Application {
         primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, 300, 200));
         primaryStage.show();
+        
+        // Set the callback for when the login is successful
+        LoginController.setOnLoginSuccessful(() -> {
+            primaryStage.close(); // Close the login stage
+            showRecommendationForm(); // Open the recommendation form
+            switchScene("ChangePassword.fxml", "Change Password", primaryStage);
+        });
     }
 
-    // Switch to another scene
-    public static void switchScene(String fxml, String title, Stage stage) {
+    private void showRecommendationForm() {
+        RecommendationForm recommendationForm = new RecommendationForm();
+        Stage primaryStage = new Stage();
         try {
-            // Load the new scene
-            Parent pane = FXMLLoader.load(Main.class.getResource(fxml));
-            Scene scene = stage.getScene();
-
-            // Check if the stage has a scene already
-            if (scene == null) {
-                scene = new Scene(pane, 300, 200);
-                stage.setScene(scene);
-            } else {
-                // If it has, replace the root with the new scene
-                stage.getScene().setRoot(pane);
-            }
-
-            // Set the stage title and show the stage
-            stage.setTitle(title);
-            stage.show();
-        } catch (IOException e) {
+            DataBaseManager.createTable(); // Initialize the database and create the table
+            recommendationForm.start(primaryStage);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -46,5 +40,19 @@ public class Main extends Application {
     // Main method to launch the application
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    // Method to switch between scenes
+    public static void switchScene(String fxml, String title, Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxml));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

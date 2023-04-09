@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
 
-public class RecommendationForm extends javafx.application.Application {
+public class RecommendationForm {
 
     private TextField firstNameTextField;
     private TextField lastNameTextField;
@@ -25,9 +25,7 @@ public class RecommendationForm extends javafx.application.Application {
     private TextField letterGradesTextField;
 
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Recommendation Form");
+    public Scene createRecommendationFormScene() {
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -129,8 +127,7 @@ public class RecommendationForm extends javafx.application.Application {
         submitButton.setOnAction(event -> saveDataToDatabase());
 
         Scene scene = new Scene(gridPane, 700, 700);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return scene;
     }
 
     private void saveDataToDatabase() {
@@ -150,6 +147,12 @@ public class RecommendationForm extends javafx.application.Application {
         DataBaseManager.insertData(firstName, lastName, gender, targetSchool, currentDate, program, firstSemester, year, courses, grades, personalCharacteristics, academicCharacteristics);
         showSuccessMessage();
     }
+    public void start(Stage primaryStage) {
+        Scene scene = createRecommendationFormScene();
+        primaryStage.setTitle("Recommendation Form");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
     private void showSuccessMessage() {
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -159,8 +162,4 @@ public class RecommendationForm extends javafx.application.Application {
         successAlert.showAndWait();
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

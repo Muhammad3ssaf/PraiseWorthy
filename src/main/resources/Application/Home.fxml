@@ -13,6 +13,7 @@
         <TextField fx:id="nameTextField" />
         <Button fx:id="updateNameButton" text="Update Name" onAction="#handleUpdateName" />
         <Button text="Logout" onAction="#handleLogout" />
+        <Button fx:id="continueButton" text="Continue" onAction="#handleContinue" />
     </children>
     <padding>
         <Insets top="20" right="20" bottom="20" left="20" />

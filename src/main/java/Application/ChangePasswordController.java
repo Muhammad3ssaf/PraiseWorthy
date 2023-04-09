@@ -75,10 +75,10 @@ public class ChangePasswordController {
             e.printStackTrace();
         }
 
-        // Close the change password window
-        Stage window = (Stage) newPasswordField.getScene().getWindow();
-        window.close();
+        // Redirect the user to the home page
+        redirectToHomePage(event);
     }
+
 
     // Handles the save password button click event
     @FXML
