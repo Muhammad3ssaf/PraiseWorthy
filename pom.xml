@@ -12,16 +12,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
+        <javafx.version>8.0.261</javafx.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.oracle.javafx</groupId>
-            <artifactId>javafx-sdk-rt</artifactId>
-            <version>2.2.21</version>
+<!--        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx</artifactId>
+            <version>${javafx.version}</version>
             <scope>system</scope>
             <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
