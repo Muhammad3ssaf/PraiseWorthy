@@ -10,7 +10,7 @@
     <children>
         <Label fx:id="welcomeLabel" />
         <Button text="Create" onAction="#handleCreate" />
-        <Button text="Search" onAction="#handleSearch" />
+        <Button text="Edit" onAction="#handleSearch" />
         <Button text="Logout" onAction="#handleLogout" />
     </children>
     <padding>

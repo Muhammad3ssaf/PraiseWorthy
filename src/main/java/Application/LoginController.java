@@ -96,7 +96,7 @@ public class LoginController {
 
     // Redirects the user to the home page
     private void redirectToHomePage(ActionEvent event) {
-        Main.switchScene("Home.fxml", "Home Page", (Stage) ((Node) event.getSource()).getScene().getWindow());
+        Main.switchScene("Home.fxml", "Home", (Stage) ((Node) event.getSource()).getScene().getWindow());
 
     }
 }

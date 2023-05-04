@@ -61,7 +61,7 @@ public class ProfessorInfoController {
     
     
     private void redirectToHomePage(ActionEvent event) {
-        Main.switchScene("Home.fxml", "Home Page", (Stage) ((Node) event.getSource()).getScene().getWindow());
+        Main.switchScene("Home.fxml", "Home", (Stage) ((Node) event.getSource()).getScene().getWindow());
 
     }
     

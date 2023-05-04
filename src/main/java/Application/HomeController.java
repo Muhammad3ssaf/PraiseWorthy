@@ -43,6 +43,7 @@ public class HomeController {
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(searchScene);
+        window.setTitle("Search");
         window.show();
     }
 

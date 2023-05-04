@@ -217,7 +217,7 @@ public class RecommendationForm {
     	        DataBaseManager.updateData(formId, firstName, lastName, gender, targetSchool, currentDate, program, firstSemester, year, firstCourse, firstCourseGrade, additionalCourses, additionalCoursesGrades, personalCharsList, academicCharsList);
     	    }            controller.setData(firstName, lastName, gender, targetSchool, currentDate, program, firstSemester, year,
                     firstCourse, firstCourseGrade, additionalCoursesAndGrades, personalCharacteristics, academicCharacteristics);
-//    	    showSuccessMessage();
+    	    showSuccessMessage();
             Stage stage = new Stage();
             stage.setTitle("Recommendation Preview");
             stage.setScene(new Scene(previewParent));
@@ -269,7 +269,7 @@ public class RecommendationForm {
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(homeScene);
-            window.setTitle("Home Page");
+            window.setTitle("Home");
             window.show();
         } catch (IOException e) {
             e.printStackTrace();
