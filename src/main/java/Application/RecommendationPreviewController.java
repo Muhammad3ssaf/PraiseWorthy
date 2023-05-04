@@ -38,7 +38,7 @@ public class RecommendationPreviewController {
         fileChooser.setInitialDirectory(initialDirectory);
 
         // Set the initial file name
-        String studentFullName = previewTextArea.getText().split(" ")[5].split("\n")[0] + previewTextArea.getText().split(" ")[3];
+        String studentFullName = previewTextArea.getText().split(" ")[4].split("\n")[0] + previewTextArea.getText().split(" ")[3];
         String defaultFileName = studentFullName + "Recommendation.txt";
         fileChooser.setInitialFileName(defaultFileName);
 
