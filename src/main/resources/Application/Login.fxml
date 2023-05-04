@@ -12,7 +12,7 @@
         <PasswordField fx:id="passwordField" />
         <Button text="Login" onAction="#handleLogin" />
         <!-- Move the "Reset Password" button inside the VBox element -->
-        <Button text="Reset Password" onAction="#handleResetPassword" />
+        <Button text="Reset Password" onAction="#redirectToChangePassword" />
     </children>
     <padding>
         <Insets top="20" right="20" bottom="20" left="20" />

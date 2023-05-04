@@ -13,9 +13,12 @@ public class Main extends Application {
     // Initialize and show the primary stage with the login scene
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	// Create the recommendations table if it doesn't exist
+        DataBaseManager.createTable();
+    	
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         primaryStage.setTitle("Login");
-        primaryStage.setScene(new Scene(root, 300, 200));
+        primaryStage.setScene(new Scene(root, 400, 300));
         primaryStage.show();
         
         // Set the callback for when the login is successful
@@ -47,7 +50,7 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxml));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 400, 300);
             stage.setTitle(title);
             stage.setScene(scene);
             stage.show();

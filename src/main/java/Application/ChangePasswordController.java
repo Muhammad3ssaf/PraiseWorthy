@@ -2,10 +2,13 @@ package Application;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -18,9 +21,9 @@ public class ChangePasswordController {
 
     // Constants for property keys
     private static final String FIRST_TIME_LOGIN_KEY = "firstTimeLogin";
-    private static final String USERNAME_KEY = "username";
     private static final String PASSWORD_KEY = "defaultPassword";
     private static final String PROPERTIES_FILE = "app.properties";
+    private boolean isFirstTimeLogin;
 
     // UI components
     @FXML
@@ -29,8 +32,6 @@ public class ChangePasswordController {
     private PasswordField newPasswordField;
     @FXML
     private PasswordField confirmNewPasswordField;
-    @FXML
-    private TextField usernameField;
 
     // Properties object to store application settings
     private Properties properties;
@@ -87,26 +88,14 @@ public class ChangePasswordController {
         String currentPassword = currentPasswordField.getText();
         String newPassword = newPasswordField.getText();
         String confirmNewPassword = confirmNewPasswordField.getText();
-        String username = usernameField.getText();
 
         // Validate input: check for empty fields
-        if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty() || username.isEmpty()) {
+        if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
             // Show an error message if any of the fields are empty
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Empty Fields");
             alert.setContentText("Please fill in all fields.");
-            alert.showAndWait();
-            return;
-        }
-
-        // Validate input: check for correct username
-        if (!username.equals(properties.getProperty(USERNAME_KEY))) {
-            // Show an error message if the entered username is incorrect
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Incorrect Username");
-            alert.setContentText("The entered username is incorrect. Please try again.");
             alert.showAndWait();
             return;
         }
@@ -132,12 +121,17 @@ public class ChangePasswordController {
             alert.showAndWait();
             return;
         }
-
+        isFirstTimeLogin = properties.getProperty(FIRST_TIME_LOGIN_KEY).equals("true") ? true : false;
+       
         // Save the new password
-        properties.setProperty(PASSWORD_KEY, newPassword);
-
+        Properties properties = new Properties();
         try {
-            properties.store(new FileOutputStream(PROPERTIES_FILE), null);
+            OutputStream output = new FileOutputStream(PROPERTIES_FILE);
+             
+            properties.setProperty(FIRST_TIME_LOGIN_KEY, "false");
+            properties.setProperty(PASSWORD_KEY, newPassword);
+            properties.store(output, null);
+            output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,22 +142,31 @@ public class ChangePasswordController {
         alert.setHeaderText("Password Changed");
         alert.setContentText("Your password has been changed successfully.");
         alert.showAndWait();
-        redirectToHomePage(event);
+        
+        if(isFirstTimeLogin){
+        	redirectToProfessorInfo(event);
+        } else {
+        	redirectToHomePage(event);
+        }
     }
 
-    // Handles the cancel button click event
+    // Handles the back to login button click event
     @FXML
-    private void handleCancel(ActionEvent event) {
-        redirectToHomePage(event);
+    private void handleBackToLogin(ActionEvent event) {
+    	Main.switchScene("Login.fxml", "Login", (Stage) ((Node) event.getSource()).getScene().getWindow());
     }
 
     // Redirects the user to the home page
     private void redirectToHomePage(ActionEvent event) {
         Main.switchScene("Home.fxml", "Home Page", (Stage) ((Node) event.getSource()).getScene().getWindow());
     }
+    private void redirectToProfessorInfo(ActionEvent event) {
+        Main.switchScene("ProfessorInfo.fxml", "Professor Information", (Stage) ((Node) event.getSource()).getScene().getWindow());
+    }
 
     // Validates the entered current password
     private boolean validateCurrentPassword(String enteredPassword) {
         return enteredPassword.equals(properties.getProperty(PASSWORD_KEY));
     }
+    
 }

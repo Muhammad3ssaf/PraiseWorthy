@@ -18,35 +18,40 @@ public class HomeController {
 
     @FXML
     private Label welcomeLabel;
-
+    
     @FXML
-    private TextField nameTextField;
+    public void handleCreate(ActionEvent event) throws IOException {
+    	RecommendationForm recommendationForm = new RecommendationForm();
+        Scene recommendationFormScene = recommendationForm.createRecommendationFormScene();
 
-    private String username;
-    @FXML
-    private Button continueButton;
-
-    // Set the username and update the welcome label
-    public void setUsername(String username) {
-        this.username = username;
-        welcomeLabel.setText("Welcome, " + username + "!");
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(recommendationFormScene);
+        window.setTitle("Recommendation Form");
+        window.show();
     }
+
+    @FXML
+    public void handleSearch(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Search.fxml"));
+        
+        RecommendationForm recommendationForm = new RecommendationForm();
+        SearchController searchController = new SearchController(recommendationForm);
+        loader.setController(searchController);
+        
+        Parent searchParent = loader.load();
+        Scene searchScene = new Scene(searchParent);
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(searchScene);
+        window.show();
+    }
+
 
     // Handle logout button click event
     @FXML
     private void handleLogout(ActionEvent event) {
-        try {
-            // Load the login scene and set it as the current scene
-            Parent loginParent = FXMLLoader.load(getClass().getResource("Login.fxml"));
-            Scene loginScene = new Scene(loginParent, 300, 200);
+    	Main.switchScene("Login.fxml", "Login", (Stage) ((Node) event.getSource()).getScene().getWindow());
 
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(loginScene);
-            window.setTitle("Login");
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     @FXML
     public void handleContinue(ActionEvent event) throws IOException {
@@ -56,13 +61,6 @@ public class HomeController {
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(recommendationFormScene);
         window.show();
-    }
-
-    // Handle the update name button click event
-    @FXML
-    private void handleUpdateName(ActionEvent event) {
-        String newName = nameTextField.getText();
-        setUsername(newName);
     }
 
 }

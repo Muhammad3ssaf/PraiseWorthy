@@ -1,0 +1,39 @@
+Letter of Recommendation
+
+
+For: %s
+Date: %s
+
+To: Graduate Admissions Committee
+
+I am writing this letter to recommend my former student %s who is applying 
+for the %s in your school. 
+
+I met %s in %s when %s enrolled in my "%s"
+course. 
+
+%s earned "%s" from this tough course, and this shows how
+knowledgeable and hard worker %s is. 
+%s
+%s has %s.
+
+%s was always %s.
+
+Furthermore, I noticed from the term project result, %s developed leadership, time 
+management, and problem-solving skills. %s worked effectively with the team members and 
+delegated tasks appropriately. They were able to deliver a successful project in a timely fashion.
+
+I believe that %s has the capacity to excel at higher education program and this 
+is my pleasure to highly recommend %s. 
+
+Please do not hesitate to contact me with further questions.
+
+
+Very Respectfully,
+
+%s
+
+%s
+%s, %s
+%s
+%s
