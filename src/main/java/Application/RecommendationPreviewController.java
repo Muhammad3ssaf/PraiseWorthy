@@ -35,6 +35,9 @@ public class RecommendationPreviewController {
 
         // Set the initial directory
         File initialDirectory = new File("CompiledRecommendations/");
+        if (!initialDirectory.exists()) {
+            initialDirectory.mkdir();
+        }
         fileChooser.setInitialDirectory(initialDirectory);
 
         // Set the initial file name
